@@ -22,6 +22,7 @@ class CreateUsersActivationTable extends Migration
 
       Schema::table('users', function (Blueprint $table) {
           $table->boolean('is_activated')->default(0);
+          $table->integer('type')->default(0);
       });
     }
 

@@ -14,8 +14,11 @@ class User extends Authenticatable
      *
      * @var array
      */
+
+    const ADMIN_TYPE = 1;
+
     protected $fillable = [
-        'name', 'email', 'password', 'is_activated',
+        'name', 'email', 'password', 'is_activated','type',
     ];
 
     /**
@@ -26,4 +29,8 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    public function isAdmin()    {        
+        return $this->type === self::ADMIN_TYPE;    
+    }
 }

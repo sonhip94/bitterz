@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use App\Rules\Captcha;
 use Illuminate\Http\Request;
+use Auth;
 
 class LoginController extends Controller
 {
@@ -44,7 +45,18 @@ class LoginController extends Controller
         $this->validate($request, [
             $this->username() => 'required', 
             'password' => 'required',
-            'g-recaptcha-response' => new Captcha()
+            'g-recaptcha-response' => new Captcha(),
         ]);
+    }
+
+    protected function authenticated($request, $user)
+    {
+        if (!$user->isAdmin()) {
+            Auth::guard($this->getGuard())->logout();
+
+            return response('Unauthorized.', 401);
+        }
+
+        return redirect()->intended($this->redirectPath());
     }
 }
