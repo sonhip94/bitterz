@@ -19,8 +19,13 @@ Route::get('/user/activation/{token}', 'Auth\RegisterController@userActivation')
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
+Route::group(['middleware' => ['web']], function () {
 
-Route::group(['middleware' => ['auth.admin']], function () {
-	return 'hello';
+    Route::group([], function () {
+        Route::get('/home', 'HomeController@index');
+    });
+
+    Route::group(['namespace' => 'Admin', 'middleware' => 'isAdmin'], function () {
+        Route::get('/admin', 'DashboardController@index');
+    });
 });

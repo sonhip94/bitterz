@@ -52,11 +52,9 @@ class LoginController extends Controller
     protected function authenticated($request, $user)
     {
         if (!$user->isAdmin()) {
-            Auth::guard($this->getGuard())->logout();
-
-            return response('Unauthorized.', 401);
+            return redirect('home');
         }
 
-        return redirect()->intended($this->redirectPath());
+        return redirect('admin');
     }
 }
